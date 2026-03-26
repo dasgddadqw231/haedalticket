@@ -81,7 +81,7 @@ export function HeroSection() {
       </div>
 
       {/* ── 메인 콘텐츠 ── */}
-      <div className="relative z-10 max-w-lg mx-auto text-center pt-2 pb-0 px-6">
+      <div className="relative z-10 max-w-lg mx-auto text-center pt-2 pb-8 px-6">
 
         {/* 뱃지 */}
         <div className="inline-flex items-center gap-2 mb-7">

@@ -26,19 +26,19 @@ import {
   updateNormalOrderStatus,
   getReservationOrders,
   updateReservationOrderStatus,
-} from "../lib/mockDb";
+} from "../lib/db";
 import type {
   Rate,
   NormalOrder,
   ReservationOrder,
   NormalStatus,
   ReservationStatus,
-} from "../lib/mockDb";
+} from "../lib/db";
 
 /* ──────────────────────────────────────────
    상수
 ────────────────────────────────────────── */
-const ADMIN_PASSWORD = "1234";
+// 비밀번호는 Vercel 환경변수 ADMIN_PASSWORD에서 서버 측 검증
 
 const NORMAL_STATUSES: NormalStatus[] = ["대기중", "입금 완료", "취소"];
 const RESERVATION_STATUSES: ReservationStatus[] = [
@@ -791,15 +791,32 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
   const [pw, setPw] = useState("");
   const [error, setError] = useState(false);
   const [shake, setShake] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
-    if (pw === ADMIN_PASSWORD) {
-      onLogin();
-    } else {
+  const handleSubmit = async () => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: pw }),
+      });
+      if (res.ok) {
+        onLogin();
+      } else {
+        setError(true);
+        setShake(true);
+        setPw("");
+        setTimeout(() => setShake(false), 500);
+      }
+    } catch {
       setError(true);
       setShake(true);
       setPw("");
       setTimeout(() => setShake(false), 500);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -830,9 +847,10 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
           )}
           <button
             onClick={handleSubmit}
-            className="w-full py-3.5 rounded-xl bg-[#1E2A5E] text-white text-sm hover:bg-[#162148] transition-colors"
+            disabled={loading}
+            className="w-full py-3.5 rounded-xl bg-[#1E2A5E] text-white text-sm hover:bg-[#162148] transition-colors disabled:opacity-60"
           >
-            로그인
+            {loading ? "확인 중..." : "로그인"}
           </button>
         </div>
       </div>

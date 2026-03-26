@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronLeft, ChevronRight, Check, CalendarDays, CreditCard } from "lucide-react";
 import lotteCardImg from "figma:asset/79a561ef1cf7c0b84f8fb24e20e710f1d7b8d210.png";
 import shinsegaeCardImg from "figma:asset/2619779150e08b3781a2ef55302d131c85161139.png";
-import { addReservationOrder } from "../lib/mockDb";
+import { addReservationOrder } from "../lib/db";
 
 const giftCardTypes = [
   { id: "lotte", name: "롯데모바일상품권", img: lotteCardImg, rate: "92%" },

@@ -187,6 +187,37 @@ export async function updateReservationOrderStatus(
   return getReservationOrders();
 }
 
+/* ──────────────────────────────────────────
+   주문 조회 (고객용)
+────────────────────────────────────────── */
+export async function getOrdersByUser(
+  name: string,
+  phone: string
+): Promise<NormalOrder[]> {
+  const { data, error } = await supabase
+    .from("normal_orders")
+    .select("*")
+    .eq("name", name)
+    .eq("phone", phone)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []).map(toNormalOrder);
+}
+
+export async function getReservationOrdersByUser(
+  name: string,
+  phone: string
+): Promise<ReservationOrder[]> {
+  const { data, error } = await supabase
+    .from("reservation_orders")
+    .select("*")
+    .eq("name", name)
+    .eq("phone", phone)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []).map(toReservationOrder);
+}
+
 export async function addReservationOrder(
   order: Omit<ReservationOrder, "id" | "createdAt" | "status">
 ): Promise<ReservationOrder> {

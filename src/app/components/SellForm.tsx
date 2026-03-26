@@ -3,7 +3,7 @@ import { ChevronDown, Check, Trash2, X } from "lucide-react";
 import cultureCardImg from "figma:asset/788db9609c735aeca250f054df2b24440badbf43.png";
 import starbucksCardImg from "figma:asset/71d838fa81d3d0d9ff68e30174fa04391b676ed3.png";
 import lotteCardImg from "figma:asset/79a561ef1cf7c0b84f8fb24e20e710f1d7b8d210.png";
-import { addNormalOrder, getRates, type Rate } from "../lib/mockDb";
+import { addNormalOrder, getRates, type Rate } from "../lib/db";
 
 const giftCardTypes = [
   {

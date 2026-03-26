@@ -11,7 +11,7 @@ export function Footer() {
         />
 
         <div className="flex flex-col items-center gap-1 text-sm text-white/60">
-          <p className="text-xs text-white/40 mt-2">대표 | 박민수</p>
+          <p className="text-xs text-white/40 mt-2">대표 | 박만수</p>
           <p className="text-xs text-white/40">사업자등록번호 | 722-93-01794</p>
         </div>
 

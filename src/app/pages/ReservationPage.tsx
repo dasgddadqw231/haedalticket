@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown, ChevronLeft, ChevronRight, Check, CalendarDays, CreditCard } from "lucide-react";
 import lotteCardImg from "figma:asset/79a561ef1cf7c0b84f8fb24e20e710f1d7b8d210.png";
 import shinsegaeCardImg from "figma:asset/2619779150e08b3781a2ef55302d131c85161139.png";
-import { addReservationOrder } from "../lib/db";
+import { addReservationOrder, getRates, type Rate } from "../lib/db";
 
 const giftCardTypes = [
-  { id: "lotte", name: "롯데모바일상품권", img: lotteCardImg, rate: "92%" },
-  { id: "shinsegae", name: "신세계 상품권", img: shinsegaeCardImg, rate: "91%" },
+  { id: "lotte", feeKey: "lotte", name: "롯데모바일상품권", img: lotteCardImg },
+  { id: "shinsegae", feeKey: "shinsegae", name: "신세계 상품권", img: shinsegaeCardImg },
 ];
 
 const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
@@ -150,8 +150,14 @@ export function ReservationPage() {
   const [account, setAccount] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [rates, setRates] = useState<Rate[]>([]);
+
+  useEffect(() => {
+    getRates().then(setRates);
+  }, []);
 
   const selectedCardObj = giftCardTypes.find((c) => c.id === selectedCard);
+  const selectedRate = selectedCardObj ? rates.find((r) => r.key === selectedCardObj.feeKey)?.value ?? 0 : 0;
   const canSubmit = selectedCard && amount && selectedDate && name && phone && bankName && account;
 
   const handleSubmit = async () => {
@@ -375,7 +381,7 @@ export function ReservationPage() {
             <div className="border-t border-[#1E2A5E]/10 mt-2 pt-2 flex justify-between text-sm">
               <span className="text-gray-700">예상 입금액</span>
               <span className="text-[#1E2A5E]">
-                {(Number(amount) * Number(quantity) * (parseFloat(selectedCardObj?.rate || "0") / 100)).toLocaleString()}원
+                {(Number(amount) * Number(quantity) * (selectedRate / 100)).toLocaleString()}원
               </span>
             </div>
           </div>

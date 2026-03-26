@@ -124,16 +124,24 @@ export function SellForm({ preselectedCard }: { preselectedCard?: string }) {
       });
 
       // 텔레그램 알림 (실패해도 주문은 정상 처리)
+      const cardGroups = registeredCards.reduce<Record<string, number>>((acc, c) => {
+        const cardName = giftCardTypes.find((t) => t.id === c.type)?.name ?? c.type;
+        acc[cardName] = (acc[cardName] || 0) + 1;
+        return acc;
+      }, {});
+      const cardSummary = Object.entries(cardGroups)
+        .map(([name, count]) => `${name} (${count}매)`)
+        .join(", ");
+
       fetch("/api/notify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message:
-            `[신규 상품권 매입 신청]\n` +
+            `[일반]\n` +
             `신청자: ${name}\n` +
             `연락처: ${phoneNumber}\n` +
-            `상품권 종류: ${selectedCardObj?.name} (${registeredCards.length}건)\n` +
-            `핀번호: ${registeredCards.map((c) => c.pin).join(", ")}\n` +
+            `상품권 종류: ${cardSummary}\n` +
             `공급날짜: ${new Date().toLocaleDateString("ko-KR")}\n` +
             `계좌번호: ${bankName} ${accountNumber}`,
         }),

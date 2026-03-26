@@ -175,13 +175,12 @@ export function ReservationPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message:
-            `[신규 예약판매(예판) 신청]\n` +
+            `[예약문자]\n` +
             `신청자: ${name}\n` +
             `연락처: ${phone}\n` +
-            `상품권: ${selectedCardObj?.name} (${Number(amount).toLocaleString()}원 x ${quantity}장)\n` +
-            `발송 약속일: ${selectedDate}\n` +
-            `선입금 계좌: ${bankName} ${account}\n` +
-            `선입금금액: ${(Number(amount) * Number(quantity) * (parseFloat(selectedCardObj?.rate || "0") / 100)).toLocaleString()}원`,
+            `상품권 종류: ${selectedCardObj?.name} (${Number(amount).toLocaleString()}원 x ${quantity}장)\n` +
+            `공급날짜: ${selectedDate}\n` +
+            `계좌번호: ${bankName} ${account}`,
         }),
       }).catch(() => {});
 

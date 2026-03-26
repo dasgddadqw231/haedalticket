@@ -148,6 +148,7 @@ export function ReservationPage() {
   const [phone, setPhone] = useState("");
   const [bankName, setBankName] = useState("");
   const [account, setAccount] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [rates, setRates] = useState<Rate[]>([]);
@@ -158,7 +159,7 @@ export function ReservationPage() {
 
   const selectedCardObj = giftCardTypes.find((c) => c.id === selectedCard);
   const selectedRate = selectedCardObj ? rates.find((r) => r.key === selectedCardObj.feeKey)?.value ?? 0 : 0;
-  const canSubmit = selectedCard && amount && selectedDate && name && phone && bankName && account;
+  const canSubmit = selectedCard && amount && selectedDate && name && phone && bankName && account && agreed;
 
   const handleSubmit = async () => {
     if (!canSubmit || submitting) return;
@@ -389,6 +390,18 @@ export function ReservationPage() {
         >
           {submitting ? "처리 중..." : "예약 신청하기"}
         </button>
+
+        <label className="flex items-center justify-center gap-2 mt-4 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={agreed}
+            onChange={(e) => setAgreed(e.target.checked)}
+            className="w-4 h-4 rounded accent-[#1E2A5E]"
+          />
+          <span className="text-xs text-gray-500">
+            개인정보 처리 방침 동의
+          </span>
+        </label>
       </div>
     </main>
   );

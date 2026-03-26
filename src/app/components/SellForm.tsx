@@ -273,7 +273,7 @@ export function SellForm({ preselectedCard }: { preselectedCard?: string }) {
             <span className="text-gray-800 text-sm">핀번호 직접 입력하기</span>
           </div>
           <p className="text-gray-400 text-xs mb-4">
-            판매 신청하실 상품권 핀번호를 입력하시면 됩니다. 복사 붙여넣기 가능합니다.
+            판매 신청하실 상품권 핀번호를 입력하시면 됩니다.
           </p>
           <div className={`grid gap-2 mb-3 ${(selectedCardObj?.pinCount ?? 4) === 3 ? "grid-cols-3" : "grid-cols-4"}`}>
             {pinInputs.map((pin, i) => (
@@ -430,7 +430,7 @@ export function SellForm({ preselectedCard }: { preselectedCard?: string }) {
               className="w-4 h-4 rounded accent-[#1E2A5E]"
             />
             <span className="text-xs text-gray-500">
-              개인정보 처리 방침 동의 (내용 보기)
+              개인정보 처리 방침 동의
             </span>
           </label>
         </div>

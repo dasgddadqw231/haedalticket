@@ -5,7 +5,7 @@ export function HeroSection() {
     <section
       id="home"
       className="relative overflow-hidden bg-[#1E2A5E]"
-      style={{ minHeight: "350px" }}
+      style={{ minHeight: "310px" }}
     >
       {/* ── 배경 레이어: 그리드 도트 패턴 ── */}
       <div
@@ -81,7 +81,7 @@ export function HeroSection() {
       </div>
 
       {/* ── 메인 콘텐츠 ── */}
-      <div className="relative z-10 max-w-lg mx-auto text-center pt-4 pb-4 px-6">
+      <div className="relative z-10 max-w-lg mx-auto text-center pt-2 pb-0 px-6">
 
         {/* 뱃지 */}
         <div className="inline-flex items-center gap-2 mb-7">

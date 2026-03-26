@@ -60,9 +60,8 @@ export function SellForm({ preselectedCard }: { preselectedCard?: string }) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [registeredCards, setRegisteredCards] = useState<
-    { type: string; pin: string; amount: string }[]
+    { type: string; pin: string }[]
   >([]);
-  const [cardAmount, setCardAmount] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -96,10 +95,9 @@ export function SellForm({ preselectedCard }: { preselectedCard?: string }) {
   const handleRegisterPin = () => {
     const pinCount = selectedCardObj?.pinCount ?? 4;
     const fullPin = pinInputs.slice(0, pinCount).join("-");
-    if (pinInputs.slice(0, pinCount).every((p) => p.length === 4) && selectedCard && cardAmount) {
-      setRegisteredCards([...registeredCards, { type: selectedCard, pin: fullPin, amount: cardAmount }]);
+    if (pinInputs.slice(0, pinCount).every((p) => p.length === 4) && selectedCard) {
+      setRegisteredCards([...registeredCards, { type: selectedCard, pin: fullPin }]);
       setPinInputs(Array(pinCount).fill(""));
-      setCardAmount("");
     }
   };
 
@@ -108,7 +106,7 @@ export function SellForm({ preselectedCard }: { preselectedCard?: string }) {
   };
 
   const selectedCardObj = giftCardTypes.find((c) => c.id === selectedCard);
-  const canRegister = pinInputs.every((p) => p.length === 4) && !!selectedCard && !!cardAmount;
+  const canRegister = pinInputs.every((p) => p.length === 4) && !!selectedCard;
   const canSubmit =
     name && bankName && accountNumber && phoneNumber && agreed && registeredCards.length > 0;
 
@@ -126,11 +124,13 @@ export function SellForm({ preselectedCard }: { preselectedCard?: string }) {
       });
 
       // 텔레그램 알림 (실패해도 주문은 정상 처리)
-      const cardSummary = registeredCards
-        .map((c) => {
-          const cardName = giftCardTypes.find((t) => t.id === c.type)?.name ?? c.type;
-          return `${cardName} (${Number(c.amount).toLocaleString()}원)`;
-        })
+      const cardGroups = registeredCards.reduce<Record<string, number>>((acc, c) => {
+        const cardName = giftCardTypes.find((t) => t.id === c.type)?.name ?? c.type;
+        acc[cardName] = (acc[cardName] || 0) + 1;
+        return acc;
+      }, {});
+      const cardSummary = Object.entries(cardGroups)
+        .map(([name, count]) => `${name} (${count}매)`)
         .join(", ");
 
       fetch("/api/notify", {
@@ -142,7 +142,7 @@ export function SellForm({ preselectedCard }: { preselectedCard?: string }) {
             `신청자: ${name}\n` +
             `연락처: ${phoneNumber}\n` +
             `상품권 종류: ${cardSummary}\n` +
-            `공급날짜: ${new Date().toLocaleDateString("ko-KR")}\n` +
+            `신청날짜: ${new Date().toLocaleDateString("ko-KR")}\n` +
             `계좌번호: ${bankName} ${accountNumber}`,
         }),
       }).catch(() => {});
@@ -288,13 +288,6 @@ export function SellForm({ preselectedCard }: { preselectedCard?: string }) {
               />
             ))}
           </div>
-          <input
-            type="text"
-            value={cardAmount}
-            onChange={(e) => setCardAmount(e.target.value.replace(/\D/g, ""))}
-            placeholder="금액 입력 (원)"
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-gray-700 placeholder:text-gray-300 focus:outline-none focus:border-[#1E2A5E] transition-colors mb-4"
-          />
           <button
             onClick={handleRegisterPin}
             className="w-full py-3 rounded-xl text-white transition-colors"
@@ -349,7 +342,7 @@ export function SellForm({ preselectedCard }: { preselectedCard?: string }) {
                         {cardInfo?.name}
                       </p>
                       <p className="text-gray-400 truncate" style={{ fontSize: "0.75rem", letterSpacing: "0.04em" }}>
-                        {card.pin} · {Number(card.amount).toLocaleString()}원
+                        {card.pin}
                       </p>
                     </div>
                     <span className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full shrink-0">

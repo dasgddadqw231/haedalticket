@@ -175,14 +175,13 @@ export function ReservationPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message:
-            `📋 <b>새 예약 접수</b>\n\n` +
-            `👤 이름: ${name}\n` +
-            `📱 연락처: ${phone}\n` +
-            `🏦 입금계좌: ${bankName} ${account}\n` +
-            `🎫 상품권: ${selectedCardObj?.name}\n` +
-            `💰 금액: ${Number(amount).toLocaleString()}원 × ${quantity}매\n` +
-            `📅 예약일: ${selectedDate}\n` +
-            `🕐 접수시간: ${new Date().toLocaleString("ko-KR")}`,
+            `[신규 예약판매(예판) 신청]\n` +
+            `신청자: ${name}\n` +
+            `연락처: ${phone}\n` +
+            `상품권: ${selectedCardObj?.name} (${Number(amount).toLocaleString()}원 x ${quantity}장)\n` +
+            `발송 약속일: ${selectedDate}\n` +
+            `선입금 계좌: ${bankName} ${account}\n` +
+            `선입금금액: ${(Number(amount) * Number(quantity) * (parseFloat(selectedCardObj?.rate || "0") / 100)).toLocaleString()}원`,
         }),
       }).catch(() => {});
 

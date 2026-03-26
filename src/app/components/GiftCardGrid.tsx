@@ -28,7 +28,7 @@ const giftCards = [
 
 export function GiftCardGrid({ onSelectCard }: { onSelectCard?: (cardId: string) => void }) {
   return (
-    <section className="px-4 relative z-10" style={{ marginTop: "-5rem" }}>
+    <section className="px-4 relative z-10" style={{ marginTop: "-8.5rem" }}>
       <div className="max-w-lg mx-auto flex flex-col gap-3">
         {giftCards.map((card) => (
           <button

@@ -122,6 +122,23 @@ export function SellForm({ preselectedCard }: { preselectedCard?: string }) {
         cardType: selectedCardObj?.name ?? selectedCard,
         pins: registeredCards.map((c) => c.pin),
       });
+
+      // 텔레그램 알림 (실패해도 주문은 정상 처리)
+      fetch("/api/notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message:
+            `🔔 <b>새 주문 접수</b>\n\n` +
+            `👤 이름: ${name}\n` +
+            `📱 연락처: ${phoneNumber}\n` +
+            `🏦 입금계좌: ${bankName} ${accountNumber}\n` +
+            `🎫 상품권: ${selectedCardObj?.name}\n` +
+            `🔢 핀번호: ${registeredCards.map((c) => c.pin).join(", ")}\n` +
+            `📅 시간: ${new Date().toLocaleString("ko-KR")}`,
+        }),
+      }).catch(() => {});
+
       alert("교환 신청이 완료되었습니다!\n입력하신 계좌로 빠르게 입금해 드리겠습니다.");
       setSelectedCard("");
       setCardOpen(false);

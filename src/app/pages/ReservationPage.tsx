@@ -378,12 +378,6 @@ export function ReservationPage() {
               <span>예약 날짜</span>
               <span>{selectedDate}</span>
             </div>
-            <div className="border-t border-[#1E2A5E]/10 mt-2 pt-2 flex justify-between text-sm">
-              <span className="text-gray-700">예상 입금액</span>
-              <span className="text-[#1E2A5E]">
-                {(Number(amount) * Number(quantity) * (selectedRate / 100)).toLocaleString()}원
-              </span>
-            </div>
           </div>
         )}
 

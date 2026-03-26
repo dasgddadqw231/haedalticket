@@ -129,13 +129,13 @@ export function SellForm({ preselectedCard }: { preselectedCard?: string }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message:
-            `[신규 일반매입 신청]\n` +
+            `[신규 상품권 매입 신청]\n` +
             `신청자: ${name}\n` +
             `연락처: ${phoneNumber}\n` +
-            `상품권: ${selectedCardObj?.name} (${registeredCards.length}건)\n` +
+            `상품권 종류: ${selectedCardObj?.name} (${registeredCards.length}건)\n` +
             `핀번호: ${registeredCards.map((c) => c.pin).join(", ")}\n` +
-            `입금계좌: ${bankName} ${accountNumber}\n` +
-            `접수시간: ${new Date().toLocaleString("ko-KR")}`,
+            `공급날짜: ${new Date().toLocaleDateString("ko-KR")}\n` +
+            `계좌번호: ${bankName} ${accountNumber}`,
         }),
       }).catch(() => {});
 

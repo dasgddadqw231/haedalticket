@@ -103,7 +103,7 @@ export function HeroSection() {
         </div>
 
         {/* 설명 */}
-        <p className="text-white/45 mb-9" style={{ fontSize: "0.88rem", lineHeight: 1.75 }}>
+        <p className="text-white/45 mb-16" style={{ fontSize: "0.88rem", lineHeight: 1.75 }}>
           회원가입 없이 간편하게
           <br />
           상품권을 현금화 할 수 있습니다.

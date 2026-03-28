@@ -14,7 +14,6 @@ export function Footer() {
             해달상품권
           </span>
         </div>
-        <p className="text-white font-bold text-2xl mt-6">010-2909-2993</p>
         <p className="text-xs text-white/50 mt-6">고객센터 24시</p>
 
         <div className="flex flex-col items-center gap-1 text-sm text-white/60 mt-6">

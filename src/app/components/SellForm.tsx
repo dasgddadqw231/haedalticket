@@ -163,7 +163,7 @@ export function SellForm({ preselectedCard }: { preselectedCard?: string }) {
   };
 
   return (
-    <section id="sell" className="py-10 px-4" ref={sectionRef}>
+    <section id="sell-form" className="py-10 px-4" ref={sectionRef}>
       <div className="max-w-lg mx-auto">
         {/* STEP 1 */}
         <div className="text-center mb-6">

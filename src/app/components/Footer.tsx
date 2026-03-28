@@ -4,14 +4,21 @@ export function Footer() {
   return (
     <footer className="bg-[#1E2A5E] py-10 px-4 pb-24">
       <div className="max-w-lg mx-auto text-center">
-        <img
-          src={logoImg}
-          alt="해달 상품권"
-          className="h-10 mx-auto mb-6"
-        />
+        <div className="flex flex-row items-center justify-center gap-2.5">
+          <img
+            src={logoImg}
+            alt="해달 상품권"
+            className="h-10"
+          />
+          <span className="text-[#E8C547] font-bold tracking-tight text-lg">
+            해달상품권
+          </span>
+        </div>
+        <p className="text-xs text-white/50 mt-2">고객센터 09시~16시</p>
 
-        <div className="flex flex-col items-center gap-1 text-sm text-white/60">
-          <p className="text-xs text-white/40 mt-2">대표 | 박만수</p>
+        <div className="flex flex-col items-center gap-1 text-sm text-white/60 mt-6">
+          <p className="text-xs text-white/40">유선 | 010-2909-2993</p>
+          <p className="text-xs text-white/40 mt-1">대표 | 박만수</p>
           <p className="text-xs text-white/40">사업자등록번호 | 722-93-01794</p>
           <p className="text-xs text-white/40">통신판매번호 | 2026달서0067호</p>
         </div>
@@ -19,11 +26,6 @@ export function Footer() {
         <p className="text-xs text-white/30 mt-6">
           © 해달상품권 2026
         </p>
-
-        <div className="mt-8 flex flex-col items-center gap-3">
-        </div>
-
-
       </div>
     </footer>
   );

@@ -270,7 +270,6 @@ const statusStyle: Record<string, string> = {
   "대기": "text-yellow-600",
   "선입금 완료": "text-blue-500",
   "정상 완료": "text-green-500",
-  "연체/미납": "text-red-500",
 };
 
 /* ── 페이지 ── */

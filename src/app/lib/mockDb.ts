@@ -12,7 +12,6 @@ export type ReservationStatus =
   | "대기"
   | "선입금 완료"
   | "정상 완료"
-  | "연체/미납"
   | "취소";
 
 export interface Rate {

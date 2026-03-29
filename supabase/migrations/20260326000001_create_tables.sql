@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS normal_orders (
 );
 
 -- 3. 예약 주문 (Reservation Orders)
-CREATE TYPE reservation_status AS ENUM ('대기', '선입금 완료', '정상 완료', '연체/미납', '취소');
+CREATE TYPE reservation_status AS ENUM ('대기', '선입금 완료', '정상 완료', '취소');
 
 CREATE TABLE IF NOT EXISTS reservation_orders (
   id TEXT PRIMARY KEY,

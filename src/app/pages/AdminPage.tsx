@@ -44,7 +44,7 @@ import type {
 
 const NORMAL_STATUSES: NormalStatus[] = ["대기중"];
 const RESERVATION_STATUSES: ReservationStatus[] = [
-  "대기", "선입금 완료", "연체/미납",
+  "대기", "선입금 완료",
 ];
 
 const normalStatusStyle: Record<NormalStatus, string> = {
@@ -57,7 +57,6 @@ const reservationStatusStyle: Record<ReservationStatus, string> = {
   대기: "bg-yellow-50 text-yellow-600 border border-yellow-200",
   "선입금 완료": "bg-blue-50 text-blue-600 border border-blue-200",
   "정상 완료": "bg-green-50 text-green-600 border border-green-200",
-  "연체/미납": "bg-orange-50 text-orange-600 border border-orange-200",
   취소: "bg-red-50 text-red-500 border border-red-200",
 };
 
@@ -705,7 +704,7 @@ function OrderManagement() {
 
   const normalStatuses: (NormalStatus | "전체")[] = ["전체", "대기중"];
   const resStatuses: (ReservationStatus | "전체")[] = [
-    "전체", "대기", "선입금 완료", "연체/미납",
+    "전체", "대기", "선입금 완료",
   ];
 
   const filteredNormal =

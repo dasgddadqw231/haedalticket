@@ -188,6 +188,27 @@ export async function updateReservationOrderStatus(
 }
 
 /* ──────────────────────────────────────────
+   주문 삭제 API
+────────────────────────────────────────── */
+export async function deleteNormalOrder(id: string): Promise<NormalOrder[]> {
+  const { error } = await supabase
+    .from("normal_orders")
+    .delete()
+    .eq("id", id);
+  if (error) throw error;
+  return getNormalOrders();
+}
+
+export async function deleteReservationOrder(id: string): Promise<ReservationOrder[]> {
+  const { error } = await supabase
+    .from("reservation_orders")
+    .delete()
+    .eq("id", id);
+  if (error) throw error;
+  return getReservationOrders();
+}
+
+/* ──────────────────────────────────────────
    주문 조회 (고객용)
 ────────────────────────────────────────── */
 export async function getOrdersByUser(

@@ -24,8 +24,10 @@ import {
   updateRate,
   getNormalOrders,
   updateNormalOrderStatus,
+  deleteNormalOrder,
   getReservationOrders,
   updateReservationOrderStatus,
+  deleteReservationOrder,
 } from "../lib/db";
 import type {
   Rate,
@@ -40,9 +42,9 @@ import type {
 ────────────────────────────────────────── */
 // 비밀번호는 Vercel 환경변수 ADMIN_PASSWORD에서 서버 측 검증
 
-const NORMAL_STATUSES: NormalStatus[] = ["대기중", "입금 완료", "취소"];
+const NORMAL_STATUSES: NormalStatus[] = ["대기중"];
 const RESERVATION_STATUSES: ReservationStatus[] = [
-  "대기", "선입금 완료", "정상 완료", "연체/미납", "취소",
+  "대기", "선입금 완료", "연체/미납",
 ];
 
 const normalStatusStyle: Record<NormalStatus, string> = {
@@ -122,11 +124,13 @@ function NormalOrderModal({
   saving,
   onClose,
   onSave,
+  onDelete,
 }: {
   order: NormalOrder;
   saving: boolean;
   onClose: () => void;
   onSave: (id: string, status: NormalStatus) => void;
+  onDelete: (id: string) => void;
 }) {
   const [status, setStatus] = useState<NormalStatus>(order.status);
 
@@ -218,7 +222,7 @@ function NormalOrderModal({
           </div>
         </div>
 
-        <div className="px-5 py-4 border-t border-gray-100">
+        <div className="px-5 py-4 border-t border-gray-100 space-y-2">
           <button
             onClick={() => onSave(order.id, status)}
             disabled={saving}
@@ -226,6 +230,13 @@ function NormalOrderModal({
           >
             {saving ? <Loader2 size={15} className="animate-spin" /> : null}
             {saving ? "저장 중..." : "저장하기"}
+          </button>
+          <button
+            onClick={() => { if (confirm("이 주문을 삭제하시겠습니까?")) onDelete(order.id); }}
+            disabled={saving}
+            className="w-full py-3 rounded-2xl border border-red-200 text-red-500 text-sm hover:bg-red-50 transition-colors disabled:opacity-60"
+          >
+            삭제
           </button>
         </div>
       </div>
@@ -241,11 +252,13 @@ function ReservationOrderModal({
   saving,
   onClose,
   onSave,
+  onDelete,
 }: {
   order: ReservationOrder;
   saving: boolean;
   onClose: () => void;
   onSave: (id: string, status: ReservationStatus) => void;
+  onDelete: (id: string) => void;
 }) {
   const [status, setStatus] = useState<ReservationStatus>(order.status);
 
@@ -350,7 +363,7 @@ function ReservationOrderModal({
           </div>
         </div>
 
-        <div className="px-5 py-4 border-t border-gray-100">
+        <div className="px-5 py-4 border-t border-gray-100 space-y-2">
           <button
             onClick={() => onSave(order.id, status)}
             disabled={saving}
@@ -358,6 +371,13 @@ function ReservationOrderModal({
           >
             {saving ? <Loader2 size={15} className="animate-spin" /> : null}
             {saving ? "저장 중..." : "저장하기"}
+          </button>
+          <button
+            onClick={() => { if (confirm("이 주문을 삭제하시겠습니까?")) onDelete(order.id); }}
+            disabled={saving}
+            className="w-full py-3 rounded-2xl border border-red-200 text-red-500 text-sm hover:bg-red-50 transition-colors disabled:opacity-60"
+          >
+            삭제
           </button>
         </div>
       </div>
@@ -661,9 +681,31 @@ function OrderManagement() {
     }
   };
 
-  const normalStatuses: (NormalStatus | "전체")[] = ["전체", "대기중", "입금 완료", "취소"];
+  const handleNormalDelete = async (id: string) => {
+    setSavingNormal(true);
+    try {
+      const updated = await deleteNormalOrder(id);
+      setNormalOrders(updated);
+      setSelectedNormal(null);
+    } finally {
+      setSavingNormal(false);
+    }
+  };
+
+  const handleResDelete = async (id: string) => {
+    setSavingRes(true);
+    try {
+      const updated = await deleteReservationOrder(id);
+      setResOrders(updated);
+      setSelectedRes(null);
+    } finally {
+      setSavingRes(false);
+    }
+  };
+
+  const normalStatuses: (NormalStatus | "전체")[] = ["전체", "대기중"];
   const resStatuses: (ReservationStatus | "전체")[] = [
-    "전체", "대기", "선입금 완료", "정상 완료", "연체/미납", "취소",
+    "전체", "대기", "선입금 완료", "연체/미납",
   ];
 
   const filteredNormal =
@@ -770,6 +812,7 @@ function OrderManagement() {
           saving={savingNormal}
           onClose={() => setSelectedNormal(null)}
           onSave={handleNormalSave}
+          onDelete={handleNormalDelete}
         />
       )}
       {selectedRes && (
@@ -778,6 +821,7 @@ function OrderManagement() {
           saving={savingRes}
           onClose={() => setSelectedRes(null)}
           onSave={handleResSave}
+          onDelete={handleResDelete}
         />
       )}
     </>

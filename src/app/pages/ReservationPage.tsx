@@ -142,7 +142,6 @@ export function ReservationPage() {
   const [selectedCard, setSelectedCard] = useState("");
   const [cardOpen, setCardOpen] = useState(false);
   const [amount, setAmount] = useState("");
-  const [quantity, setQuantity] = useState("1");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [name, setName] = useState("");
@@ -174,7 +173,7 @@ export function ReservationPage() {
         account,
         cardType: selectedCardObj?.name ?? selectedCard,
         amount: Number(amount),
-        quantity: Number(quantity),
+        quantity: 1,
       });
 
       // 텔레그램 알림 (실패해도 주문은 정상 처리)
@@ -186,7 +185,7 @@ export function ReservationPage() {
             `[예약문자]\n` +
             `신청자: ${name}\n` +
             `연락처: ${phone}\n` +
-            `상품권 종류: ${selectedCardObj?.name} (${Number(amount).toLocaleString()}원 x ${quantity}장)\n` +
+            `상품권 종류: ${selectedCardObj?.name} (${Number(amount).toLocaleString()}원)\n` +
             `공급날짜: ${selectedDate} ${selectedTime}\n` +
             `계좌번호: ${bankName} ${account}`,
         }),
@@ -207,7 +206,7 @@ export function ReservationPage() {
           </div>
           <h2 className="text-gray-800 mb-2" style={{ fontSize: "1.3rem" }}>예약이 완료되었습니다</h2>
           <p className="text-gray-500 text-sm mb-1">
-            {selectedCardObj?.name} · {Number(amount).toLocaleString()}원 × {quantity}매
+            {selectedCardObj?.name} · {Number(amount).toLocaleString()}원
           </p>
           <p className="text-gray-500 text-sm mb-6">
             {selectedDate} {selectedTime}
@@ -221,7 +220,6 @@ export function ReservationPage() {
               setSubmitted(false);
               setSelectedCard("");
               setAmount("");
-              setQuantity("1");
               setSelectedDate("");
               setSelectedTime("");
               setName("");
@@ -287,28 +285,16 @@ export function ReservationPage() {
           </div>
         </div>
 
-        {/* 금액 & 수량 */}
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          <div>
-            <label className="block text-gray-600 text-sm mb-2">금액 (원)</label>
-            <input
-              type="text"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value.replace(/\D/g, ""))}
-              placeholder="50,000"
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-700 placeholder:text-gray-300 focus:outline-none focus:border-[#1E2A5E] transition-colors"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-600 text-sm mb-2">수량 (매)</label>
-            <input
-              type="text"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value.replace(/\D/g, ""))}
-              placeholder="1"
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-700 placeholder:text-gray-300 focus:outline-none focus:border-[#1E2A5E] transition-colors"
-            />
-          </div>
+        {/* 금액 */}
+        <div className="mb-6">
+          <label className="block text-gray-600 text-sm mb-2">금액 (원)</label>
+          <input
+            type="text"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value.replace(/\D/g, ""))}
+            placeholder="50,000"
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-700 placeholder:text-gray-300 focus:outline-none focus:border-[#1E2A5E] transition-colors"
+          />
         </div>
 
         {/* 캘린더 날짜 선택 */}
@@ -383,8 +369,8 @@ export function ReservationPage() {
               <span>{selectedCardObj?.name}</span>
             </div>
             <div className="flex justify-between text-sm text-gray-600 mb-1">
-              <span>금액 × 수량</span>
-              <span>{Number(amount).toLocaleString()}원 × {quantity}매</span>
+              <span>금액</span>
+              <span>{Number(amount).toLocaleString()}원</span>
             </div>
             <div className="flex justify-between text-sm text-gray-600 mb-1">
               <span>예약 날짜</span>

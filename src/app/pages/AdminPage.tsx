@@ -17,6 +17,7 @@ import {
   FileText,
   RefreshCw,
   Loader2,
+  Copy,
 } from "lucide-react";
 import logoImg from "figma:asset/logo-real.png";
 import {
@@ -177,6 +178,12 @@ function NormalOrderModal({
               <span className="text-sm text-gray-800 shrink-0">{order.bank}</span>
               <span className="text-gray-200">|</span>
               <span className="text-sm text-gray-700 font-mono flex-1">{order.account}</span>
+              <button
+                onClick={() => navigator.clipboard.writeText(`${order.bank} ${order.account}`)}
+                className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors shrink-0"
+              >
+                <Copy size={14} className="text-gray-400" />
+              </button>
             </div>
           </div>
 
@@ -305,6 +312,12 @@ function ReservationOrderModal({
               <span className="text-sm text-gray-800 shrink-0">{order.bank}</span>
               <span className="text-gray-200">|</span>
               <span className="text-sm text-gray-700 font-mono flex-1">{order.account}</span>
+              <button
+                onClick={() => navigator.clipboard.writeText(`${order.bank} ${order.account}`)}
+                className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors shrink-0"
+              >
+                <Copy size={14} className="text-gray-400" />
+              </button>
             </div>
           </div>
 

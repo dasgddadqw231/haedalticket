@@ -144,6 +144,7 @@ export function ReservationPage() {
   const [amount, setAmount] = useState("");
   const [quantity, setQuantity] = useState("1");
   const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [bankName, setBankName] = useState("");
@@ -159,14 +160,14 @@ export function ReservationPage() {
 
   const selectedCardObj = giftCardTypes.find((c) => c.id === selectedCard);
   const selectedRate = selectedCardObj ? rates.find((r) => r.key === selectedCardObj.feeKey)?.value ?? 0 : 0;
-  const canSubmit = selectedCard && amount && selectedDate && name && phone && bankName && account && agreed;
+  const canSubmit = selectedCard && amount && selectedDate && selectedTime && name && phone && bankName && account && agreed;
 
   const handleSubmit = async () => {
     if (!canSubmit || submitting) return;
     setSubmitting(true);
     try {
       await addReservationOrder({
-        reservationDate: selectedDate,
+        reservationDate: `${selectedDate} ${selectedTime}`,
         name,
         phone,
         bank: bankName,
@@ -186,7 +187,7 @@ export function ReservationPage() {
             `신청자: ${name}\n` +
             `연락처: ${phone}\n` +
             `상품권 종류: ${selectedCardObj?.name} (${Number(amount).toLocaleString()}원 x ${quantity}장)\n` +
-            `공급날짜: ${selectedDate}\n` +
+            `공급날짜: ${selectedDate} ${selectedTime}\n` +
             `계좌번호: ${bankName} ${account}`,
         }),
       }).catch(() => {});
@@ -209,7 +210,7 @@ export function ReservationPage() {
             {selectedCardObj?.name} · {Number(amount).toLocaleString()}원 × {quantity}매
           </p>
           <p className="text-gray-500 text-sm mb-6">
-            {selectedDate}
+            {selectedDate} {selectedTime}
           </p>
           <p className="text-gray-400 text-xs mb-8">
             예약일에 맞춰 핀번호를 준비해주세요.<br />
@@ -222,6 +223,7 @@ export function ReservationPage() {
               setAmount("");
               setQuantity("1");
               setSelectedDate("");
+              setSelectedTime("");
               setName("");
               setPhone("");
               setBankName("");
@@ -317,9 +319,18 @@ export function ReservationPage() {
           </label>
           <Calendar selected={selectedDate} onSelect={setSelectedDate} />
           {selectedDate && (
-            <p className="text-sm text-[#1E2A5E] mt-2 text-center">
-              선택된 날짜: {selectedDate}
-            </p>
+            <>
+              <p className="text-sm text-[#1E2A5E] mt-2 text-center">
+                선택된 날짜: {selectedDate}
+              </p>
+              <label className="block text-gray-600 text-sm mt-4 mb-2">공급 시간</label>
+              <input
+                type="time"
+                value={selectedTime}
+                onChange={(e) => setSelectedTime(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-700 focus:outline-none focus:border-[#1E2A5E] transition-colors"
+              />
+            </>
           )}
         </div>
 
@@ -377,7 +388,7 @@ export function ReservationPage() {
             </div>
             <div className="flex justify-between text-sm text-gray-600 mb-1">
               <span>예약 날짜</span>
-              <span>{selectedDate}</span>
+              <span>{selectedDate} {selectedTime}</span>
             </div>
           </div>
         )}

@@ -85,3 +85,7 @@ CREATE POLICY "reservation_orders_insert" ON reservation_orders FOR INSERT WITH 
 CREATE POLICY "rates_update" ON rates FOR UPDATE USING (true);
 CREATE POLICY "normal_orders_update" ON normal_orders FOR UPDATE USING (true);
 CREATE POLICY "reservation_orders_update" ON reservation_orders FOR UPDATE USING (true);
+
+-- 삭제 정책 (관리자)
+CREATE POLICY "normal_orders_delete" ON normal_orders FOR DELETE USING (true);
+CREATE POLICY "reservation_orders_delete" ON reservation_orders FOR DELETE USING (true);

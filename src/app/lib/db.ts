@@ -135,10 +135,17 @@ export async function addNormalOrder(
   order: Omit<NormalOrder, "id" | "createdAt" | "status">
 ): Promise<NormalOrder> {
   const now = new Date();
-  const { count } = await supabase
+  const year = now.getFullYear();
+  const prefix = `N-${year}-`;
+  const { data: latest } = await supabase
     .from("normal_orders")
-    .select("*", { count: "exact", head: true });
-  const id = `N-${now.getFullYear()}-${String((count ?? 0) + 1).padStart(4, "0")}`;
+    .select("id")
+    .like("id", `${prefix}%`)
+    .order("id", { ascending: false })
+    .limit(1)
+    .single();
+  const lastNum = latest ? parseInt(latest.id.replace(prefix, ""), 10) : 0;
+  const id = `${prefix}${String(lastNum + 1).padStart(4, "0")}`;
   const createdAt = formatDate(now);
 
   const row = {
@@ -242,10 +249,17 @@ export async function addReservationOrder(
   order: Omit<ReservationOrder, "id" | "createdAt" | "status">
 ): Promise<ReservationOrder> {
   const now = new Date();
-  const { count } = await supabase
+  const year = now.getFullYear();
+  const prefix = `R-${year}-`;
+  const { data: latest } = await supabase
     .from("reservation_orders")
-    .select("*", { count: "exact", head: true });
-  const id = `R-${now.getFullYear()}-${String((count ?? 0) + 1).padStart(4, "0")}`;
+    .select("id")
+    .like("id", `${prefix}%`)
+    .order("id", { ascending: false })
+    .limit(1)
+    .single();
+  const lastNum = latest ? parseInt(latest.id.replace(prefix, ""), 10) : 0;
+  const id = `${prefix}${String(lastNum + 1).padStart(4, "0")}`;
   const createdAt = formatDate(now);
 
   const row = {

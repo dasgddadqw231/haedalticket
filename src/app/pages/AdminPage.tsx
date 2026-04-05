@@ -117,6 +117,54 @@ function EmptyState() {
 }
 
 /* ──────────────────────────────────────────
+   삭제 확인 모달 (반려/완료 선택)
+────────────────────────────────────────── */
+function DeleteConfirmModal({
+  orderId,
+  saving,
+  onClose,
+  onDelete,
+}: {
+  orderId: string;
+  saving: boolean;
+  onClose: () => void;
+  onDelete: (id: string, type: "reject" | "complete") => void;
+}) {
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center px-6">
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div className="relative w-full max-w-[340px] bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <div className="flex items-center justify-between px-5 pt-5 pb-2">
+          <p className="text-sm text-gray-800 font-medium">주문 처리</p>
+          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
+            <X size={16} className="text-gray-400" />
+          </button>
+        </div>
+        <p className="px-5 text-xs text-gray-400 mb-4">처리 방식을 선택해주세요.</p>
+        <div className="px-5 pb-5 space-y-2">
+          <button
+            onClick={() => onDelete(orderId, "reject")}
+            disabled={saving}
+            className="w-full py-3.5 rounded-2xl border border-red-200 text-red-500 text-sm hover:bg-red-50 transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+          >
+            {saving ? <Loader2 size={15} className="animate-spin" /> : null}
+            반려처리
+          </button>
+          <button
+            onClick={() => onDelete(orderId, "complete")}
+            disabled={saving}
+            className="w-full py-3.5 rounded-2xl border border-green-200 text-green-600 text-sm hover:bg-green-50 transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+          >
+            {saving ? <Loader2 size={15} className="animate-spin" /> : null}
+            완료처리
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────
    일반 주문 모달
 ────────────────────────────────────────── */
 function NormalOrderModal({
@@ -130,9 +178,10 @@ function NormalOrderModal({
   saving: boolean;
   onClose: () => void;
   onSave: (id: string, status: NormalStatus) => void;
-  onDelete: (id: string) => void;
+  onDelete: (id: string, type: "reject" | "complete") => void;
 }) {
   const [status, setStatus] = useState<NormalStatus>(order.status);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center">
@@ -238,7 +287,7 @@ function NormalOrderModal({
             {saving ? "저장 중..." : "저장하기"}
           </button>
           <button
-            onClick={() => { if (confirm("이 주문을 삭제하시겠습니까?")) onDelete(order.id); }}
+            onClick={() => setShowDeleteConfirm(true)}
             disabled={saving}
             className="w-full py-3 rounded-2xl border border-red-200 text-red-500 text-sm hover:bg-red-50 transition-colors disabled:opacity-60"
           >
@@ -246,6 +295,15 @@ function NormalOrderModal({
           </button>
         </div>
       </div>
+
+      {showDeleteConfirm && (
+        <DeleteConfirmModal
+          orderId={order.id}
+          saving={saving}
+          onClose={() => setShowDeleteConfirm(false)}
+          onDelete={onDelete}
+        />
+      )}
     </div>
   );
 }
@@ -264,9 +322,10 @@ function ReservationOrderModal({
   saving: boolean;
   onClose: () => void;
   onSave: (id: string, status: ReservationStatus) => void;
-  onDelete: (id: string) => void;
+  onDelete: (id: string, type: "reject" | "complete") => void;
 }) {
   const [status, setStatus] = useState<ReservationStatus>(order.status);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center">
@@ -385,7 +444,7 @@ function ReservationOrderModal({
             {saving ? "저장 중..." : "저장하기"}
           </button>
           <button
-            onClick={() => { if (confirm("이 주문을 삭제하시겠습니까?")) onDelete(order.id); }}
+            onClick={() => setShowDeleteConfirm(true)}
             disabled={saving}
             className="w-full py-3 rounded-2xl border border-red-200 text-red-500 text-sm hover:bg-red-50 transition-colors disabled:opacity-60"
           >
@@ -393,6 +452,15 @@ function ReservationOrderModal({
           </button>
         </div>
       </div>
+
+      {showDeleteConfirm && (
+        <DeleteConfirmModal
+          orderId={order.id}
+          saving={saving}
+          onClose={() => setShowDeleteConfirm(false)}
+          onDelete={onDelete}
+        />
+      )}
     </div>
   );
 }
@@ -693,7 +761,7 @@ function OrderManagement() {
     }
   };
 
-  const handleNormalDelete = async (id: string) => {
+  const handleNormalDelete = async (id: string, type: "reject" | "complete") => {
     setSavingNormal(true);
     try {
       const order = normalOrders.find((o: NormalOrder) => o.id === id);
@@ -701,8 +769,8 @@ function OrderManagement() {
       setNormalOrders(updated);
       setSelectedNormal(null);
 
-      // 반려 SMS 알림
-      if (order) {
+      // 반려일 때만 SMS 알림
+      if (type === "reject" && order) {
         fetch("/api/sms", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -717,7 +785,7 @@ function OrderManagement() {
     }
   };
 
-  const handleResDelete = async (id: string) => {
+  const handleResDelete = async (id: string, type: "reject" | "complete") => {
     setSavingRes(true);
     try {
       const order = resOrders.find((o: ReservationOrder) => o.id === id);
@@ -725,8 +793,8 @@ function OrderManagement() {
       setResOrders(updated);
       setSelectedRes(null);
 
-      // 반려 SMS 알림
-      if (order) {
+      // 반려일 때만 SMS 알림
+      if (type === "reject" && order) {
         fetch("/api/sms", {
           method: "POST",
           headers: { "Content-Type": "application/json" },

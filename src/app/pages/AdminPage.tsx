@@ -776,7 +776,7 @@ function OrderManagement() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             to: order.phone.replace(/-/g, ""),
-            text: `[해달상품권] ${order.name}님, 신청하신 교환 건(${id})이 반려 처리되었습니다. 자세한 사항은 고객센터(010-2909-2993)로 문의 부탁드립니다.`,
+            text: `[해달상품권] ${order.name}님, 신청하신 교환 건이 반려 처리되었습니다.\n\n주문번호: ${id}\n상품권: ${order.cardType} (${order.pins.length}매)\n\n자세한 사항은 고객센터(010-2909-2993)로 문의 부탁드립니다.`,
           }),
         }).catch(() => {});
       }
@@ -800,7 +800,7 @@ function OrderManagement() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             to: order.phone.replace(/-/g, ""),
-            text: `[해달상품권] ${order.name}님, 신청하신 예약 건(${id})이 반려 처리되었습니다. 자세한 사항은 고객센터(010-2909-2993)로 문의 부탁드립니다.`,
+            text: `[해달상품권] ${order.name}님, 신청하신 예약 건이 반려 처리되었습니다.\n\n주문번호: ${id}\n상품권: ${order.cardType}\n금액: ${order.amount.toLocaleString()}원\n\n자세한 사항은 고객센터(010-2909-2993)로 문의 부탁드립니다.`,
           }),
         }).catch(() => {});
       }

@@ -197,7 +197,7 @@ export function ReservationPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           to: phone.replace(/-/g, ""),
-          text: `[해달상품권] ${name}님, 예약 신청이 접수되었습니다. 공급일: ${selectedDate} ${selectedTime}. 감사합니다.\n\n고객센터: 010-2909-2993`,
+          text: `[해달상품권] ${name}님, 예약 신청이 접수되었습니다.\n\n상품권: ${selectedCardObj?.name}\n금액: ${Number(amount).toLocaleString()}원\n공급일: ${selectedDate} ${selectedTime}\n\n감사합니다.\n\n고객센터: 010-2909-2993`,
         }),
       }).catch(() => {});
 

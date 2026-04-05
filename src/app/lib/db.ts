@@ -55,15 +55,18 @@ export interface ReservationOrder {
 ────────────────────────────────────────── */
 const pad = (n: number) => String(n).padStart(2, "0");
 
-function formatDate(date: Date): string {
-  return `${date.getFullYear()}.${pad(date.getMonth() + 1)}.${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+/** TIMESTAMPTZ(ISO) → 한국시간 "YYYY.MM.DD HH:mm" 포맷 */
+function formatKST(isoString: string): string {
+  const d = new Date(isoString);
+  const kst = new Date(d.getTime() + 9 * 60 * 60 * 1000);
+  return `${kst.getUTCFullYear()}.${pad(kst.getUTCMonth() + 1)}.${pad(kst.getUTCDate())} ${pad(kst.getUTCHours())}:${pad(kst.getUTCMinutes())}`;
 }
 
 /** DB snake_case → 프론트 camelCase 변환 */
 function toNormalOrder(row: Record<string, unknown>): NormalOrder {
   return {
     id: row.id as string,
-    createdAt: row.created_at as string,
+    createdAt: formatKST(row.created_at as string),
     name: row.name as string,
     phone: row.phone as string,
     bank: row.bank as string,
@@ -77,7 +80,7 @@ function toNormalOrder(row: Record<string, unknown>): NormalOrder {
 function toReservationOrder(row: Record<string, unknown>): ReservationOrder {
   return {
     id: row.id as string,
-    createdAt: row.created_at as string,
+    createdAt: formatKST(row.created_at as string),
     reservationDate: row.reservation_date as string,
     name: row.name as string,
     phone: row.phone as string,
@@ -148,11 +151,9 @@ export async function addNormalOrder(
     .maybeSingle();
   const lastNum = latest ? parseInt(latest.id.replace(prefix, ""), 10) : 0;
   const id = `${prefix}${String(lastNum + 1).padStart(4, "0")}`;
-  const createdAt = formatDate(now);
 
   const row = {
     id,
-    created_at: createdAt,
     name: order.name,
     phone: order.phone,
     bank: order.bank,
@@ -262,11 +263,9 @@ export async function addReservationOrder(
     .maybeSingle();
   const lastNum = latest ? parseInt(latest.id.replace(prefix, ""), 10) : 0;
   const id = `${prefix}${String(lastNum + 1).padStart(4, "0")}`;
-  const createdAt = formatDate(now);
 
   const row = {
     id,
-    created_at: createdAt,
     reservation_date: order.reservationDate,
     name: order.name,
     phone: order.phone,

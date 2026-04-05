@@ -147,6 +147,16 @@ export function SellForm({ preselectedCard }: { preselectedCard?: string }) {
         }),
       }).catch(() => {});
 
+      // 고객 SMS 알림
+      fetch("/api/sms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          to: phoneNumber.replace(/-/g, ""),
+          text: `[해달상품권] ${name}님, 교환 신청이 접수되었습니다. 빠르게 처리해 드리겠습니다. 감사합니다.\n\n고객센터: 010-2909-2993`,
+        }),
+      }).catch(() => {});
+
       alert("교환 신청이 완료되었습니다!\n입력하신 계좌로 빠르게 입금해 드리겠습니다.");
       setSelectedCard("");
       setCardOpen(false);

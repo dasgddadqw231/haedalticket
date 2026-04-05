@@ -696,9 +696,22 @@ function OrderManagement() {
   const handleNormalDelete = async (id: string) => {
     setSavingNormal(true);
     try {
+      const order = normalOrders.find((o: NormalOrder) => o.id === id);
       const updated = await deleteNormalOrder(id);
       setNormalOrders(updated);
       setSelectedNormal(null);
+
+      // 반려 SMS 알림
+      if (order) {
+        fetch("/api/sms", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            to: order.phone.replace(/-/g, ""),
+            text: `[해달상품권] ${order.name}님, 신청하신 교환 건(${id})이 반려 처리되었습니다. 자세한 사항은 고객센터(010-2909-2993)로 문의 부탁드립니다.`,
+          }),
+        }).catch(() => {});
+      }
     } finally {
       setSavingNormal(false);
     }
@@ -707,9 +720,22 @@ function OrderManagement() {
   const handleResDelete = async (id: string) => {
     setSavingRes(true);
     try {
+      const order = resOrders.find((o: ReservationOrder) => o.id === id);
       const updated = await deleteReservationOrder(id);
       setResOrders(updated);
       setSelectedRes(null);
+
+      // 반려 SMS 알림
+      if (order) {
+        fetch("/api/sms", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            to: order.phone.replace(/-/g, ""),
+            text: `[해달상품권] ${order.name}님, 신청하신 예약 건(${id})이 반려 처리되었습니다. 자세한 사항은 고객센터(010-2909-2993)로 문의 부탁드립니다.`,
+          }),
+        }).catch(() => {});
+      }
     } finally {
       setSavingRes(false);
     }

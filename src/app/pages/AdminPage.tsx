@@ -774,7 +774,7 @@ function OrderManagement() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             to: order.phone.replace(/-/g, ""),
-            text: `[해달상품권]\n${order.name}님, 신청하신 교환 건이 반려되었습니다.\n\n■ ${order.cardType} (${order.pins.length}매)\n\n사유 확인 및 재신청은 아래로 문의해 주세요.\n문의 010-2909-2993`,
+            text: `[해달상품권]\n${order.name}님, 신청하신 교환 건이 반려되었습니다.\n\n■ ${order.cardType} (${order.pins.length}매)\n\n사유 확인 및 재신청은 아래로 문의해 주세요.\n라인 hdtk2`,
           }),
         }).catch(() => {});
       }
@@ -798,7 +798,7 @@ function OrderManagement() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             to: order.phone.replace(/-/g, ""),
-            text: `[해달상품권]\n${order.name}님, 신청하신 예약 건이 반려되었습니다.\n\n■ ${order.cardType} · ${order.amount.toLocaleString()}원\n\n사유 확인 및 재신청은 아래로 문의해 주세요.\n문의 010-2909-2993`,
+            text: `[해달상품권]\n${order.name}님, 신청하신 예약 건이 반려되었습니다.\n\n■ ${order.cardType} · ${order.amount.toLocaleString()}원\n\n사유 확인 및 재신청은 아래로 문의해 주세요.\n라인 hdtk2`,
           }),
         }).catch(() => {});
       }

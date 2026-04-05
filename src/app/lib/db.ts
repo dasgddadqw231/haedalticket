@@ -143,7 +143,7 @@ export async function addNormalOrder(
     .like("id", `${prefix}%`)
     .order("id", { ascending: false })
     .limit(1)
-    .single();
+    .maybeSingle();
   const lastNum = latest ? parseInt(latest.id.replace(prefix, ""), 10) : 0;
   const id = `${prefix}${String(lastNum + 1).padStart(4, "0")}`;
   const createdAt = formatDate(now);
@@ -257,7 +257,7 @@ export async function addReservationOrder(
     .like("id", `${prefix}%`)
     .order("id", { ascending: false })
     .limit(1)
-    .single();
+    .maybeSingle();
   const lastNum = latest ? parseInt(latest.id.replace(prefix, ""), 10) : 0;
   const id = `${prefix}${String(lastNum + 1).padStart(4, "0")}`;
   const createdAt = formatDate(now);

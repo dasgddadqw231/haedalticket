@@ -395,7 +395,7 @@ function ReservationOrderModal({
                 <p className="text-sm text-gray-800">{order.amount.toLocaleString()}원</p>
               </div>
               <div>
-                <p className="text-xs text-gray-400 mb-1">퍼센트</p>
+                <p className="text-xs text-gray-400 mb-1">할인율</p>
                 <p className="text-sm text-gray-800">{order.percent}%</p>
               </div>
               <div>

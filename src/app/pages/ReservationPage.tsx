@@ -312,7 +312,7 @@ export function ReservationPage() {
 
         {/* 퍼센트 */}
         <div className="mb-6">
-          <label className="block text-gray-600 text-sm mb-2">퍼센트 (%)</label>
+          <label className="block text-gray-600 text-sm mb-2">할인율 (%)</label>
           <input
             type="text"
             value={percent}
@@ -398,7 +398,7 @@ export function ReservationPage() {
               <span>{Number(amount).toLocaleString()}원</span>
             </div>
             <div className="flex justify-between text-sm text-gray-600 mb-1">
-              <span>퍼센트</span>
+              <span>할인율</span>
               <span>{percent}%</span>
             </div>
             <div className="flex justify-between text-sm text-gray-600 mb-1">

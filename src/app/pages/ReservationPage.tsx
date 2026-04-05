@@ -200,7 +200,7 @@ export function ReservationPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           to: phone.replace(/-/g, ""),
-          text: `[해달상품권]\n${name}님의 예약이 정상 접수되었습니다.\n\n■ ${selectedCardObj?.name} · ${Number(amount).toLocaleString()}원\n■ 할인율 ${percent}%\n■ 공급일 ${selectedDate} ${selectedTime}\n\n검토 후 연락 드리겠습니다.\n라인 hdtk2`,
+          text: `[해달상품권]\n${name}님의 예약이 정상 접수되었습니다.\n\n■ ${selectedCardObj?.name} · ${Number(amount).toLocaleString()}원\n■ 할인율 ${percent}%\n■ 공급일 ${selectedDate} ${selectedTime}\n\n검토 후 연락 드리겠습니다.\n문의: 라인 hdtk2`,
         }),
       }).catch(() => {});
 

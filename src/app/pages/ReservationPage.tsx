@@ -142,6 +142,7 @@ export function ReservationPage() {
   const [selectedCard, setSelectedCard] = useState("");
   const [cardOpen, setCardOpen] = useState(false);
   const [amount, setAmount] = useState("");
+  const [percent, setPercent] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [name, setName] = useState("");
@@ -159,7 +160,7 @@ export function ReservationPage() {
 
   const selectedCardObj = giftCardTypes.find((c) => c.id === selectedCard);
   const selectedRate = selectedCardObj ? rates.find((r) => r.key === selectedCardObj.feeKey)?.value ?? 0 : 0;
-  const canSubmit = selectedCard && amount && selectedDate && selectedTime && name && phone && bankName && account && agreed;
+  const canSubmit = selectedCard && amount && percent && selectedDate && selectedTime && name && phone && bankName && account && agreed;
 
   const handleSubmit = async () => {
     if (!canSubmit || submitting) return;
@@ -173,6 +174,7 @@ export function ReservationPage() {
         account,
         cardType: selectedCardObj?.name ?? selectedCard,
         amount: Number(amount),
+        percent: Number(percent),
         quantity: 1,
       });
 
@@ -197,7 +199,7 @@ export function ReservationPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           to: phone.replace(/-/g, ""),
-          text: `[해달상품권] ${name}님, 예약 신청이 접수되었습니다.\n\n상품권: ${selectedCardObj?.name}\n금액: ${Number(amount).toLocaleString()}원\n공급일: ${selectedDate} ${selectedTime}\n\n감사합니다.\n\n고객센터: 010-2909-2993`,
+          text: `[해달상품권]\n${name}님의 예약이 정상 접수되었습니다.\n\n■ ${selectedCardObj?.name} · ${Number(amount).toLocaleString()}원\n■ 공급일 ${selectedDate} ${selectedTime}\n\n예약일에 맞춰 진행해 드리겠습니다.\n문의 010-2909-2993`,
         }),
       }).catch(() => {});
 
@@ -230,6 +232,7 @@ export function ReservationPage() {
               setSubmitted(false);
               setSelectedCard("");
               setAmount("");
+              setPercent("");
               setSelectedDate("");
               setSelectedTime("");
               setName("");
@@ -303,6 +306,18 @@ export function ReservationPage() {
             value={amount}
             onChange={(e) => setAmount(e.target.value.replace(/\D/g, ""))}
             placeholder="50,000"
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-700 placeholder:text-gray-300 focus:outline-none focus:border-[#1E2A5E] transition-colors"
+          />
+        </div>
+
+        {/* 퍼센트 */}
+        <div className="mb-6">
+          <label className="block text-gray-600 text-sm mb-2">퍼센트 (%)</label>
+          <input
+            type="text"
+            value={percent}
+            onChange={(e) => setPercent(e.target.value.replace(/[^\d.]/g, ""))}
+            placeholder="예) 92"
             className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-700 placeholder:text-gray-300 focus:outline-none focus:border-[#1E2A5E] transition-colors"
           />
         </div>
@@ -381,6 +396,10 @@ export function ReservationPage() {
             <div className="flex justify-between text-sm text-gray-600 mb-1">
               <span>금액</span>
               <span>{Number(amount).toLocaleString()}원</span>
+            </div>
+            <div className="flex justify-between text-sm text-gray-600 mb-1">
+              <span>퍼센트</span>
+              <span>{percent}%</span>
             </div>
             <div className="flex justify-between text-sm text-gray-600 mb-1">
               <span>예약 날짜</span>

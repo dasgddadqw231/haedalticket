@@ -45,6 +45,7 @@ export interface ReservationOrder {
   account: string;
   cardType: string;
   amount: number;
+  percent: number;
   quantity: number;
   status: ReservationStatus;
 }
@@ -84,6 +85,7 @@ function toReservationOrder(row: Record<string, unknown>): ReservationOrder {
     account: row.account as string,
     cardType: row.card_type as string,
     amount: row.amount as number,
+    percent: row.percent as number,
     quantity: row.quantity as number,
     status: row.status as ReservationStatus,
   };
@@ -272,6 +274,7 @@ export async function addReservationOrder(
     account: order.account,
     card_type: order.cardType,
     amount: order.amount,
+    percent: order.percent,
     quantity: order.quantity,
     status: "대기" as ReservationStatus,
   };

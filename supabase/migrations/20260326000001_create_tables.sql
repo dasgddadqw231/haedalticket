@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS reservation_orders (
   account TEXT NOT NULL,
   card_type TEXT NOT NULL,
   amount NUMERIC NOT NULL DEFAULT 0,
+  percent NUMERIC NOT NULL DEFAULT 0,
   quantity INTEGER NOT NULL DEFAULT 0,
   status reservation_status NOT NULL DEFAULT '대기'
 );

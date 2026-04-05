@@ -391,18 +391,16 @@ function ReservationOrderModal({
             </div>
             <div className="grid grid-cols-3 gap-3 mb-3">
               <div>
-                <p className="text-xs text-gray-400 mb-1">권종</p>
+                <p className="text-xs text-gray-400 mb-1">금액</p>
                 <p className="text-sm text-gray-800">{order.amount.toLocaleString()}원</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-400 mb-1">퍼센트</p>
+                <p className="text-sm text-gray-800">{order.percent}%</p>
               </div>
               <div>
                 <p className="text-xs text-gray-400 mb-1">수량</p>
                 <p className="text-sm text-gray-800">{order.quantity}매</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-400 mb-1">합계</p>
-                <p className="text-sm text-[#1E2A5E]">
-                  {(order.amount * order.quantity).toLocaleString()}원
-                </p>
               </div>
             </div>
             {order.reservationDate && (
@@ -776,7 +774,7 @@ function OrderManagement() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             to: order.phone.replace(/-/g, ""),
-            text: `[해달상품권] ${order.name}님, 신청하신 교환 건이 반려 처리되었습니다.\n\n주문번호: ${id}\n상품권: ${order.cardType} (${order.pins.length}매)\n\n자세한 사항은 고객센터(010-2909-2993)로 문의 부탁드립니다.`,
+            text: `[해달상품권]\n${order.name}님, 신청하신 교환 건이 반려되었습니다.\n\n■ ${order.cardType} (${order.pins.length}매)\n\n사유 확인 및 재신청은 아래로 문의해 주세요.\n문의 010-2909-2993`,
           }),
         }).catch(() => {});
       }
@@ -800,7 +798,7 @@ function OrderManagement() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             to: order.phone.replace(/-/g, ""),
-            text: `[해달상품권] ${order.name}님, 신청하신 예약 건이 반려 처리되었습니다.\n\n주문번호: ${id}\n상품권: ${order.cardType}\n금액: ${order.amount.toLocaleString()}원\n\n자세한 사항은 고객센터(010-2909-2993)로 문의 부탁드립니다.`,
+            text: `[해달상품권]\n${order.name}님, 신청하신 예약 건이 반려되었습니다.\n\n■ ${order.cardType} · ${order.amount.toLocaleString()}원\n\n사유 확인 및 재신청은 아래로 문의해 주세요.\n문의 010-2909-2993`,
           }),
         }).catch(() => {});
       }

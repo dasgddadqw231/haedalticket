@@ -153,7 +153,7 @@ export function SellForm({ preselectedCard }: { preselectedCard?: string }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           to: phoneNumber.replace(/-/g, ""),
-          text: `[해달상품권] ${name}님, 교환 신청이 접수되었습니다.\n\n상품권: ${cardSummary}\n신청일: ${new Date().toLocaleDateString("ko-KR")}\n\n빠르게 처리해 드리겠습니다. 감사합니다.\n\n고객센터: 010-2909-2993`,
+          text: `[해달상품권]\n${name}님의 교환 신청이 정상 접수되었습니다.\n\n■ ${cardSummary}\n■ ${new Date().toLocaleDateString("ko-KR")}\n\n확인 후 빠르게 입금 도와드리겠습니다.\n문의 010-2909-2993`,
         }),
       }).catch(() => {});
 

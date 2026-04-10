@@ -318,7 +318,7 @@ export function ReservationPage() {
             type="text"
             value={percent}
             onChange={(e) => setPercent(e.target.value.replace(/[^\d.]/g, ""))}
-            placeholder="예) 92"
+            placeholder="예) 20~30%"
             className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-700 placeholder:text-gray-300 focus:outline-none focus:border-[#1E2A5E] transition-colors"
           />
         </div>

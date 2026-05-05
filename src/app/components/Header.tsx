@@ -6,7 +6,7 @@ import logoImg from "figma:asset/logo-real.png";
 const navItems = [
   { label: "홈", path: "/", icon: Home },
   { label: "즉시매입", path: "/#sell-form", icon: ShoppingCart, anchor: "sell-form" },
-  { label: "예약판매", path: "/reservation", icon: CalendarDays },
+  // { label: "예약판매", path: "/reservation", icon: CalendarDays }, // 임시 비공개
 ];
 
 function scrollToSellForm() {
